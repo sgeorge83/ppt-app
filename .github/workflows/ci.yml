@@ -61,7 +61,7 @@ jobs:
             Write-Host "makeappx.exe not found; uploading payload folder only"
             exit 0
           }
-          & $make.FullName pack /d dist\WordOnAirSlides /p dist\WordOnAirSlides_1.0.1.0_x64.msix /o
+          & $make.FullName pack /d dist\WordOnAirSlides /p dist\WordOnAirSlides_1.0.2.0_x64.msix /o
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4

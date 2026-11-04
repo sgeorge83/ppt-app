@@ -3,7 +3,7 @@
 #   powershell -ExecutionPolicy Bypass -File packaging\build_msix.ps1
 
 param(
-    [string]$Version = "1.0.1.0"
+    [string]$Version = "1.0.2.0"
 )
 
 $ErrorActionPreference = "Stop"

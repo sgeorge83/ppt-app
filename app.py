@@ -347,21 +347,21 @@ class MainForm(Form):
         self.logo_box.Size = Size(640, 28)
         self.logo_box.ReadOnly = True
         browse = self._button("Browse", False)
-        browse.Location = Point(668, 112)
+        browse.Location = Point(16, 152)
         browse.Click += self._on_browse_logo
         clear = self._button("Clear", False)
-        clear.Location = Point(800, 112)
+        clear.Location = Point(148, 152)
         clear.Click += lambda *_args: self._set_logo("")
         theme_label = Label()
         theme_label.Text = "Theme"
         theme_label.ForeColor = NAVY_C
-        theme_label.Location = Point(16, 162)
+        theme_label.Location = Point(16, 206)
         theme_label.AutoSize = True
         self.theme_buttons = {}
         x = 16
         for theme in THEMES:
             button = self._button(theme.name, False)
-            button.Location = Point(x, 190)
+            button.Location = Point(x, 234)
             button.Size = Size(150, 40)
             button.Click += lambda _sender, _args, chosen=theme.id: self._choose_theme(chosen)
             page.Controls.Add(button)
@@ -370,7 +370,7 @@ class MainForm(Form):
         note = Label()
         note.Text = "Morning Air is the WordOnAir navy and gold. The verse wording stays the same in every theme."
         note.ForeColor = MUTED_C
-        note.Location = Point(16, 248)
+        note.Location = Point(16, 290)
         note.AutoSize = True
         for control in (name_label, self.church_box, logo_label, self.logo_box, browse, clear, theme_label, note):
             page.Controls.Add(control)
@@ -435,12 +435,19 @@ class MainForm(Form):
     def _set_logo(self, path: str) -> None:
         self.logo_box.Text = path
 
+    def _show_file_dialog(self, dialog) -> bool:
+        """Open the classic file window. The newer window hangs inside an MSIX package."""
+        dialog.AutoUpgradeEnabled = False
+        dialog.RestoreDirectory = True
+        return dialog.ShowDialog(self) == DialogResult.OK
+
     def _on_browse_logo(self, _sender, _args) -> None:
         dialog = OpenFileDialog()
         dialog.Filter = "Images (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg"
         dialog.Title = "Church logo"
-        if dialog.ShowDialog() == DialogResult.OK:
+        if self._show_file_dialog(dialog):
             self._set_logo(dialog.FileName)
+            self._persist()
 
     def _on_topic(self, _sender, _args) -> None:
         self.topic_refs.Items.Clear()
@@ -545,8 +552,9 @@ class MainForm(Form):
         dialog = SaveFileDialog()
         dialog.Filter = "PowerPoint (*.pptx)|*.pptx"
         dialog.FileName = "WordOnAir-Slides.pptx"
+        dialog.DefaultExt = "pptx"
         dialog.Title = "Create PowerPoint slides"
-        if dialog.ShowDialog() != DialogResult.OK:
+        if not self._show_file_dialog(dialog):
             return
         self._write(dialog.FileName, None)
 
@@ -554,7 +562,7 @@ class MainForm(Form):
         dialog = OpenFileDialog()
         dialog.Filter = "PowerPoint (*.pptx)|*.pptx"
         dialog.Title = "Add slides to an existing presentation"
-        if dialog.ShowDialog() != DialogResult.OK:
+        if not self._show_file_dialog(dialog):
             return
         self._write(dialog.FileName, dialog.FileName)
 
@@ -575,7 +583,10 @@ class MainForm(Form):
             self._persist()
             self.preview_box.Text = windows_text(self._preview_text(verses))
             self._set_status(f"Saved {destination}", "ok")
-            os.startfile(destination)
+            try:
+                os.startfile(destination)
+            except OSError:
+                self._set_status(f"Saved {destination}. Open that file in PowerPoint.", "ok")
         except Exception as exc:
             self._set_status(str(exc), "error")
             MessageBox.Show(str(exc), APP_NAME, MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -632,6 +643,12 @@ def main() -> None:
         save_about_snapshot(target)
         print(f"Wrote {target}")
         return
+    try:
+        import ctypes
+
+        ctypes.windll.ole32.CoInitializeEx(None, 2)
+    except Exception:
+        pass
     Application.EnableVisualStyles()
     Application.SetCompatibleTextRenderingDefault(False)
     Application.Run(MainForm())

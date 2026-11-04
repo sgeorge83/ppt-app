@@ -1,4 +1,7 @@
-"""Store logos and the Windows icon for WordOnAir Slides."""
+"""Store logos and the Windows icon for WordOnAir Slides.
+
+Square icons use the same WordOnAir mark as Bible Widget.
+"""
 
 from __future__ import annotations
 
@@ -6,13 +9,14 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
+ROOT = Path(__file__).resolve().parents[1]
 ASSETS = Path(__file__).resolve().parent / "Assets"
-LISTING = Path(__file__).resolve().parents[1] / "store" / "listing" / "en-US"
+LISTING = ROOT / "store" / "listing" / "en-US"
+SOURCE = Path(__file__).resolve().parent / "brand" / "wordonair-icon.png"
 
 NAVY = (21, 34, 56, 255)
 GOLD = (201, 168, 76, 255)
 MIST = (244, 247, 251, 255)
-TEAL = (94, 196, 207, 255)
 
 
 def font(size: int, bold: bool = False):
@@ -27,15 +31,14 @@ def font(size: int, bold: bool = False):
     return ImageFont.load_default()
 
 
-def mark(size: int) -> Image.Image:
-    image = Image.new("RGBA", (size, size), NAVY)
-    draw = ImageDraw.Draw(image)
-    pad = max(2, size // 16)
-    draw.rectangle((0, size - pad * 2, size, size), fill=GOLD)
-    draw.rectangle((0, size - pad * 3, size, size - pad * 2), fill=TEAL)
-    letter = font(int(size * 0.52), True)
-    draw.text((size / 2, size * 0.42), "W", font=letter, fill=MIST, anchor="mm")
-    return image
+def load_mark() -> Image.Image:
+    if not SOURCE.is_file():
+        raise SystemExit(f"WordOnAir icon is missing: {SOURCE}")
+    return Image.open(SOURCE).convert("RGBA")
+
+
+def fitted(source: Image.Image, size: int) -> Image.Image:
+    return source.resize((size, size), Image.Resampling.LANCZOS)
 
 
 def save(image: Image.Image, path: Path) -> None:
@@ -44,9 +47,9 @@ def save(image: Image.Image, path: Path) -> None:
     print(f"Wrote {path}")
 
 
-def wide() -> None:
+def wide(source: Image.Image) -> None:
     image = Image.new("RGBA", (310, 150), NAVY)
-    emblem = mark(96)
+    emblem = fitted(source, 96)
     image.alpha_composite(emblem, (24, 27))
     draw = ImageDraw.Draw(image)
     draw.text((136, 40), "WordOnAir", font=font(26, True), fill=MIST)
@@ -54,18 +57,19 @@ def wide() -> None:
     save(image, ASSETS / "Wide310x150Logo.png")
 
 
-def splash() -> None:
+def splash(source: Image.Image) -> None:
     image = Image.new("RGBA", (620, 300), NAVY)
-    image.alpha_composite(mark(140), (240, 48))
+    emblem = fitted(source, 140)
+    image.alpha_composite(emblem, ((620 - 140) // 2, 36))
     draw = ImageDraw.Draw(image)
-    draw.text((310, 220), "WordOnAir Slides", font=font(28, True), fill=MIST, anchor="mm")
-    draw.text((310, 260), "WordOnAir Labs", font=font(16), fill=GOLD, anchor="mm")
+    draw.text((310, 210), "WordOnAir Slides", font=font(28, True), fill=MIST, anchor="mm")
+    draw.text((310, 252), "WordOnAir Labs", font=font(16), fill=GOLD, anchor="mm")
     save(image, ASSETS / "SplashScreen.png")
 
 
 def icon_file(source: Image.Image) -> None:
     sizes = [(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
-    images = [source.resize(size, Image.Resampling.LANCZOS) for size in sizes]
+    images = [fitted(source, size[0]) for size in sizes]
     dest = ASSETS / "app.ico"
     images[-1].save(dest, format="ICO", sizes=sizes)
     print(f"Wrote {dest}")
@@ -73,7 +77,7 @@ def icon_file(source: Image.Image) -> None:
 
 def main() -> None:
     ASSETS.mkdir(parents=True, exist_ok=True)
-    source = mark(512)
+    source = load_mark()
     names = {
         44: "Square44x44Logo.png",
         50: "StoreLogo.png",
@@ -82,16 +86,16 @@ def main() -> None:
         310: "Square310x310Logo.png",
     }
     for size, name in names.items():
-        save(source.resize((size, size), Image.Resampling.LANCZOS), ASSETS / name)
+        save(fitted(source, size), ASSETS / name)
     listing = {
         71: "StoreListing71x71.png",
         150: "StoreListing150x150.png",
         300: "StoreListing300x300.png",
     }
     for size, name in listing.items():
-        save(source.resize((size, size), Image.Resampling.LANCZOS), LISTING / name)
-    wide()
-    splash()
+        save(fitted(source, size), LISTING / name)
+    wide(source)
+    splash(source)
     icon_file(source)
 
 
