@@ -31,4 +31,4 @@ GitHub Actions builds `dist/WordOnAirSlides_<version>_x64.msix` and uploads it a
 
 Microsoft signs Store packages. A paid code-signing certificate is not required for the submission.
 
-The installed app includes the World English Bible, the Urdu Geo Version, and Noto Nastaliq Urdu so Urdu slides keep their typeface.
+The installed app includes the World English Bible and the Urdu Geo Version. Urdu text is marked right to left. The package does not install a system font, because this Store account cannot use the shared-font extension. PowerPoint uses Noto Nastaliq Urdu when that font is already on the PC.
