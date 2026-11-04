@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap uap4 rescap">
+
+  <Identity
+    Name="WordOnAirLabs.WordOnAirSlides"
+    Publisher="CN=5144E98A-1B05-48A3-97EA-086D7DF840DF"
+    Version="1.0.0.0"
+    ProcessorArchitecture="x64" />
+
+  <Properties>
+    <DisplayName>WordOnAir Slides</DisplayName>
+    <PublisherDisplayName>WordOnAir Labs</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+    <Description>Free English and Urdu Bible verses on PowerPoint slides for pastors, from WordOnAir Labs.</Description>
+  </Properties>
+
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+
+  <Applications>
+    <Application
+      Id="WordOnAirSlides"
+      Executable="WordOnAirSlides.exe"
+      EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="WordOnAir Slides"
+        Description="Place World English Bible and Urdu Geo verses on PowerPoint slides. Free from WordOnAir Labs."
+        BackgroundColor="#152238"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile
+          Wide310x150Logo="Assets\Wide310x150Logo.png"
+          Square71x71Logo="Assets\Square71x71Logo.png"
+          Square310x310Logo="Assets\Square310x310Logo.png"
+          ShortName="WordOnAir Slides" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#152238" />
+      </uap:VisualElements>
+      <Extensions>
+        <uap4:Extension Category="windows.sharedFonts">
+          <uap4:SharedFonts>
+            <uap4:Font File="Fonts\NotoNastaliqUrdu-Regular.ttf" />
+          </uap4:SharedFonts>
+        </uap4:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>
