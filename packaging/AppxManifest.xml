@@ -8,7 +8,7 @@
   <Identity
     Name="WordOnAirLabs.WordOnAirSlides"
     Publisher="CN=5144E98A-1B05-48A3-97EA-086D7DF840DF"
-    Version="1.0.0.1"
+    Version="1.0.1.0"
     ProcessorArchitecture="x64" />
 
   <Properties>
