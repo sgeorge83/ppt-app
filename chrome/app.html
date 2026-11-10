@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WordOnAir Slides</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <header class="mast">
+    <p class="kicker">WordOnAir Labs</p>
+    <h1>WordOnAir Slides</h1>
+    <p class="subtitle">English and Urdu verses for PowerPoint</p>
+  </header>
+
+  <div class="tools">
+    <div class="languages" role="group" aria-label="Language">
+      <button type="button" data-language="both">Both</button>
+      <button type="button" data-language="english">English</button>
+      <button type="button" data-language="urdu">Urdu</button>
+    </div>
+    <label class="keep">
+      <input id="keep-together" type="checkbox">
+      Keep a passage together
+    </label>
+  </div>
+
+  <main class="workspace">
+    <section class="editor">
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab" role="tab" data-tab="reference" aria-selected="true">Reference</button>
+        <button type="button" class="tab" role="tab" data-tab="search">Search</button>
+        <button type="button" class="tab" role="tab" data-tab="topics">Topics</button>
+        <button type="button" class="tab" role="tab" data-tab="church">Church</button>
+        <button type="button" class="tab" role="tab" data-tab="about">About</button>
+      </div>
+
+      <div class="panel" data-panel="reference">
+        <p class="hint">Example: John 3:16, Jn 3:16, Psalm 23, 1 Cor 13:4-7, or یوحنا 3:16</p>
+        <input id="reference" class="field" type="text" autocomplete="off" spellcheck="false" placeholder="John 3:16">
+      </div>
+
+      <div class="panel" data-panel="search" hidden>
+        <p class="hint">Search English or Urdu. The verse on the slide still follows Both, English, or Urdu.</p>
+        <div class="search-row">
+          <input id="search" class="field" type="text" autocomplete="off" placeholder="Search a word">
+          <button type="button" id="search-button" class="primary">Search</button>
+        </div>
+        <select id="search-results" multiple size="12" aria-label="Search results"></select>
+      </div>
+
+      <div class="panel" data-panel="topics" hidden>
+        <p class="hint">A short list for the sermon, not every verse that contains the word.</p>
+        <div class="topic-row">
+          <select id="topic-list" size="12" aria-label="Topics"></select>
+          <select id="topic-refs" multiple size="12" aria-label="Topic references"></select>
+        </div>
+      </div>
+
+      <div class="panel" data-panel="church" hidden>
+        <label class="stack" for="church-name">Church name</label>
+        <input id="church-name" class="field" type="text" autocomplete="organization">
+        <label class="stack" for="logo">Logo</label>
+        <div class="logo-row">
+          <input id="logo" type="file" accept="image/png,image/jpeg">
+          <button type="button" id="clear-logo">Clear</button>
+        </div>
+        <img id="logo-preview" alt="" hidden>
+        <p class="stack">Theme</p>
+        <div class="themes" role="group" aria-label="Theme"></div>
+        <p class="hint">Morning Air is the WordOnAir navy and gold. The verse wording stays the same in every theme.</p>
+      </div>
+
+      <div class="panel about" data-panel="about" hidden>
+        <pre id="about"></pre>
+      </div>
+    </section>
+
+    <aside class="preview-pane">
+      <h2>Preview</h2>
+      <div id="preview" class="preview"></div>
+    </aside>
+  </main>
+
+  <footer class="actions">
+    <button type="button" id="preview-button">Preview</button>
+    <button type="button" id="download-button" class="primary wide">Download PowerPoint</button>
+    <p class="hint action-note">Open the file in PowerPoint. To use a presentation you already have, copy these slides into that file.</p>
+  </footer>
+  <p id="status" role="status">Loading the Bible text…</p>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

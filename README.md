@@ -22,9 +22,9 @@ The app stays free. A slide that includes Urdu credits `Urdu Geo Version · Worl
 
 ## Proof on GitHub
 
-This PC is not the place the product is tested. GitHub Actions clones both Bible repositories, checks John 3:16 in both languages, checks search, and checks that the PowerPoint file contains both wordings and right-to-left Urdu. The same run builds the Microsoft Store package.
+This PC is not the place the product is tested. GitHub Actions clones both Bible repositories, checks John 3:16 in both languages, checks search, and checks that the PowerPoint file contains both wordings and right-to-left Urdu. The Windows workflow builds the Microsoft Store package. The Chrome Web Store workflow is separate, so a Chrome packaging failure does not block that package.
 
-Store listing copy, the privacy policy, and upload steps are in [store/README.md](store/README.md).
+Store listing copy, the privacy policy, and upload steps are in [store/README.md](store/README.md). Chrome Web Store steps are in [store/chrome/README.md](store/chrome/README.md).
 
 ## Local notes
 
@@ -36,4 +36,4 @@ python -m pytest
 python app.py
 ```
 
-`python packaging/build_msix.ps1` builds the package when the Windows SDK is installed. The GitHub artifact is the file to upload.
+`python packaging/build_msix.ps1` builds the Microsoft Store package when the Windows SDK is installed. `python packaging/build_chrome.py` builds the Chrome Web Store zip. Each GitHub workflow uploads its own artifact.
