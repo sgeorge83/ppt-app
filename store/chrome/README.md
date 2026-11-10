@@ -25,7 +25,7 @@ The file is `dist/WordOnAirSlides_1.0.2_chrome.zip`. Load `dist/chrome` as an un
 - Category: Productivity
 - Language: English
 - Icon: `store/chrome/icon-128.png` (the build writes this 128×128 PNG)
-- Screenshot: one 1280×800 capture of the extension page, with a reference such as John 3:16 in the preview
+- Screenshot: `store/chrome/screenshot-1280x800.png` (1280×800, John 3:16 in both languages)
 - Homepage: https://wordonair.com
 - Privacy policy: https://sgeorge83.github.io/ppt-app/
 
