@@ -4,7 +4,9 @@ The Chrome package is an extension. It is not the Windows `.msix`. A pastor open
 
 ## Package
 
-The Chrome Web Store workflow uploads `WordOnAirSlides_<version>_chrome.zip` as the artifact `WordOnAirSlides-chrome`. It does not build or replace the Windows `.msix`. Download that zip and upload it in the [Chrome Web Store developer dashboard](https://chrome.google.com/webstore/devconsole). Do not unzip it first.
+The Chrome Web Store workflow uploads the extension files as the artifact `WordOnAirSlides-chrome`. It does not build or replace the Windows `.msix`. Download that artifact and upload the downloaded zip in the [Chrome Web Store developer dashboard](https://chrome.google.com/webstore/devconsole). Open the zip first and confirm `manifest.json` is in the top level, next to `app.html`. Do not put that zip inside another zip.
+
+If a download contains only `WordOnAirSlides_1.0.2_chrome.zip`, that outer file is the wrong package. Unzip it once and upload the inner zip. That inner file already has `manifest.json` at the top.
 
 To build the same zip on this PC:
 

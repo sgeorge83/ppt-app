@@ -38,9 +38,21 @@ jobs:
       - name: Check John 3:16 in the packaged Bible
         run: node chrome/engine/check.mjs dist/chrome/data/bible.json
 
+      - name: Require manifest.json at the root of the store zip
+        run: |
+          python - <<'PY'
+          import glob
+          import zipfile
+          name = glob.glob("dist/*_chrome.zip")[0]
+          names = zipfile.ZipFile(name).namelist()
+          if "manifest.json" not in names:
+              raise SystemExit("manifest.json is not at the root of the Chrome package")
+          print("manifest.json is at the root of", name)
+          PY
+
       - name: Upload the Chrome Web Store package
         uses: actions/upload-artifact@v4
         with:
           name: WordOnAirSlides-chrome
-          path: dist/*_chrome.zip
+          path: dist/chrome
           if-no-files-found: error

@@ -207,6 +207,9 @@ def pack() -> Path:
         for path in DIST.rglob("*"):
             if path.is_file():
                 package.write(path, path.relative_to(DIST).as_posix())
+    names = zipfile.ZipFile(destination).namelist()
+    if "manifest.json" not in names:
+        raise SystemExit("manifest.json is not at the root of the Chrome package")
     print(f"Wrote {destination} ({destination.stat().st_size} bytes)")
     return destination
 
